@@ -74,7 +74,7 @@ def trading():
     close_list = get_data()
 
     ma = np.mean(close_list)
-    ma8 = np.rolling(8).mean(close_list) # moving average 4
+    ma8 = np.rolling(8).mean(close_list) # moving average 8
     ma20 = np.rolling(20).mean(close_list) # moving average 20
     # print(len(close_list))
     last_price = close_list[-1]
@@ -96,11 +96,11 @@ def trading():
         pos_held = False''' 
     
 for i in range(close_list.size):
-    if np.ma8.iloc[i] > np.ma20.iloc[i] and np.ma8.iloc[i-1] < np.ma20.iloc[i-1]: #if ma4 crossed ma20 and is now above = buy
+    if np.ma8.iloc[i] > np.ma20.iloc[i] and np.ma8.iloc[i-1] < np.ma20.iloc[i-1]: #if ma8 crossed ma20 and is now above = buy
         print("Buy")
         buy(1, symb)
         pos_held = True
-    elif np.ma8.iloc[i] < np.ma20.iloc[i] and np.ma8.iloc[i-1] > np.ma20.iloc[i-1]: #if ma4 crosses again but now is below = sell
+    elif np.ma8.iloc[i] < np.ma20.iloc[i] and np.ma8.iloc[i-1] > np.ma20.iloc[i-1]: #if ma8 crosses again but now is below = sell
         print("Sell")
         sell(1, symb)
         pos_held = False
