@@ -8,7 +8,6 @@ import pytz
 import pandas as df
 '''
     This is using Alpaca paper trading with fake money.
-    You can setup a free account on Alpaca here: https://alpaca.markets/
 '''
 
 
@@ -32,7 +31,7 @@ def get_data():
     # Returns a an numpy array of the closing prices of the past 5 minutes
     time_now = datetime.now(tz=UTC)
     time_5_mins = time_now - timedelta(minutes=6)
-    bar_iter = api.get_bars_iter(symb, tradeapi.TimeFrame.Minutes, time_5_mins.isoformat(), time_now.isoformat(),limit = 5)
+    bar_iter = api.get_bars_iter(symb, tradeapi.TimeFrame.Minute, time_5_mins.isoformat(), time_now.isoformat(),limit = 5)
     close_list = []
     for bar in bar_iter:
         close_list.append(bar.c)
@@ -74,8 +73,11 @@ def trading():
     close_list = get_data()
 
     ma = np.mean(close_list)
-    ma8 = np.rolling(8).mean(close_list) # moving average 8
-    ma20 = np.rolling(20).mean(close_list) # moving average 20
+    ma8 = np.SMA(close_list, 8) # moving average 8
+    ma20 = np.SMA(close_list, 20) # moving average 20
+    
+    ma8b4 = np.SMA(close_list, 8) [-1] # moving average 8 one bar before
+    ma20b4 = np.SMA(close_list, 20) [-1] # moving average 20 one bar before
     # print(len(close_list))
     last_price = close_list[-1]
 
@@ -93,14 +95,13 @@ def trading():
     elif ma - 0.2 > last_price and pos_held: # Sell when moving average is ten cents above the last price
         print("Sell")
         sell(1, symb)
-        pos_held = False''' 
-    
-for i in range(close_list.size):
-    if np.ma8.iloc[i] > np.ma20.iloc[i] and np.ma8.iloc[i-1] < np.ma20.iloc[i-1]: #if ma8 crossed ma20 and is now above = buy
+        pos_held = False
+'''    
+    if ma8 > ma20 and ma8b4 < ma20bf: #if ma8 crossed ma20 and is now above = buy
         print("Buy")
         buy(1, symb)
         pos_held = True
-    elif np.ma8.iloc[i] < np.ma20.iloc[i] and np.ma8.iloc[i-1] > np.ma20.iloc[i-1]: #if ma8 crosses again but now is below = sell
+    elif ma8 < ma20 and ma8b4 > ma20b4: #if ma8 crosses again but now is below = sell
         print("Sell")
         sell(1, symb)
         pos_held = False
