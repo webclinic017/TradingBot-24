@@ -97,7 +97,7 @@ def trading():
         sell(1, symb)
         pos_held = False
 '''    
-    if ma8 > ma20 and ma8b4 < ma20bf: #if ma8 crossed ma20 and is now above = buy
+    if ma8 > ma20 and ma8b4 < ma20b4: #if ma8 crossed ma20 and is now above = buy
         print("Buy")
         buy(1, symb)
         pos_held = True
